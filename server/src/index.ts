@@ -11,14 +11,16 @@ import { registerRoomHandlers } from "./handlers/roomHandlers";
 import { registerGameHandlers } from "./handlers/gameHandlers";
 import { registerEmotionHandlers } from "./handlers/emotionHandlers";
 
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
+
 const app = express();
-app.use(cors());
+app.use(cors({ origin: CORS_ORIGIN }));
 
 const httpServer = createServer(app);
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: "*",
+    origin: CORS_ORIGIN,
     methods: ["GET", "POST"],
   },
 });
@@ -51,5 +53,5 @@ setInterval(() => {
 
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
-  console.log(`Emo-Wolf server running on port ${PORT}`);
+  console.log(`WWW — WakuWaku Word Wolf server running on port ${PORT}`);
 });

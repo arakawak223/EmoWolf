@@ -44,11 +44,13 @@ export default function Home() {
         {/* Logo */}
         <div className="text-center">
           <h1 className="text-5xl font-bold mb-2">
-            <span className="text-wolf-purple">Emo</span>
-            <span className="text-wolf-red">-Wolf</span>
+            <span className="text-wolf-purple">Waku</span>
+            <span className="text-wolf-red">Waku</span>
+            <span className="text-white"> Word </span>
+            <span className="text-wolf-blue">Wolf</span>
           </h1>
           <p className="text-gray-400 text-sm">
-            言葉の裏にある「本音」と「表情」を突き止めろ
+            新感覚の人狼ゲーム
           </p>
         </div>
 

@@ -24,6 +24,11 @@ export class RoomManager {
     if (room.players.length >= 8) return null;
     if (room.phase !== "lobby") return null;
 
+    // Prevent duplicate joins
+    if (room.players.some((p) => p.id === player.id)) {
+      return room;
+    }
+
     room.players.push(player);
     this.playerToRoom.set(player.id, roomId);
     return room;

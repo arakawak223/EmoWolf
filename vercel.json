@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd .. && npm install && npm run build -w shared && cd client && npm run build",
+  "installCommand": "echo 'skipped'",
+  "framework": "nextjs"
+}

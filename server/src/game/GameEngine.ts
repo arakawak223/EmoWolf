@@ -50,7 +50,7 @@ function assignRoles(room: Room): void {
   }
 
   // Re-shuffle to randomize positions
-  const roles = shuffled.map((_, idx) => (idx < count ? "werewolf" : "citizen") as const);
+  const roles: Array<"werewolf" | "citizen"> = shuffled.map((_, idx) => idx < count ? "werewolf" : "citizen");
   room.players.forEach((p, i) => {
     const shuffledIdx = shuffled.findIndex((sp) => sp.id === p.id);
     p.role = roles[shuffledIdx];
