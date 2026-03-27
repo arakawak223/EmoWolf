@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wolf-red: #dc2626;
+  --color-wolf-dark: #1a1a2e;
+  --color-wolf-purple: #6d28d9;
+  --color-wolf-blue: #2563eb;
+  --color-wolf-green: #16a34a;
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.5);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(109, 40, 217, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(109, 40, 217, 0.8);
+  }
+}
+
+@keyframes role-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotateY(90deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) rotateY(0deg);
+  }
+  100% {
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+@utility animate-float-up {
+  animation: float-up 1.5s ease-out forwards;
+}
+
+@utility animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@utility animate-role-reveal {
+  animation: role-reveal 0.8s ease-out forwards;
+}
