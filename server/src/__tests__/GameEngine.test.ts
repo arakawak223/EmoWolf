@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { RoomManager } from "../state/RoomManager";
 import { startGame, resolveVotes, handleVote, transitionTo } from "../game/GameEngine";
-import type { Player } from "../../../shared/src/types";
+import type { Player } from "shared";
 
 function makePlayer(id: string, opts?: Partial<Player>): Player {
   return {

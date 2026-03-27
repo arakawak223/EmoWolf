@@ -5,7 +5,7 @@ import cors from "cors";
 import type {
   ServerToClientEvents,
   ClientToServerEvents,
-} from "../../shared/src/types";
+} from "shared";
 import { RoomManager } from "./state/RoomManager";
 import { registerRoomHandlers } from "./handlers/roomHandlers";
 import { registerGameHandlers } from "./handlers/gameHandlers";

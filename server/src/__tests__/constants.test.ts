@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getWerewolfCount, MIN_PLAYERS, MAX_PLAYERS, EMOTIONS, REACTIONS } from "../../../shared/src/constants";
+import { getWerewolfCount, MIN_PLAYERS, MAX_PLAYERS, EMOTIONS, REACTIONS } from "shared";
 
 describe("getWerewolfCount", () => {
   it("returns 1 for 3 players", () => {

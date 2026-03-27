@@ -3,8 +3,8 @@ import type {
   ServerToClientEvents,
   ClientToServerEvents,
   Player,
-} from "../../../shared/src/types";
-import { MAX_PLAYERS } from "../../../shared/src/constants";
+} from "shared";
+import { MAX_PLAYERS } from "shared";
 import { RoomManager } from "../state/RoomManager";
 
 type GameIO = Server<ClientToServerEvents, ServerToClientEvents>;

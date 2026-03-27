@@ -2,8 +2,8 @@ import type { Server, Socket } from "socket.io";
 import type {
   ServerToClientEvents,
   ClientToServerEvents,
-} from "../../../shared/src/types";
-import { MIN_PLAYERS } from "../../../shared/src/constants";
+} from "shared";
+import { MIN_PLAYERS } from "shared";
 import { RoomManager } from "../state/RoomManager";
 import { startGame, handleVote } from "../game/GameEngine";
 

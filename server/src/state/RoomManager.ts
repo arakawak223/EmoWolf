@@ -1,4 +1,4 @@
-import type { Room, Player } from "../../../shared/src/types";
+import type { Room, Player } from "shared";
 
 export class RoomManager {
   private rooms = new Map<string, Room>();

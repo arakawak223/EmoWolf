@@ -2,7 +2,7 @@ import type { Server, Socket } from "socket.io";
 import type {
   ServerToClientEvents,
   ClientToServerEvents,
-} from "../../../shared/src/types";
+} from "shared";
 import { RoomManager } from "../state/RoomManager";
 
 type GameIO = Server<ClientToServerEvents, ServerToClientEvents>;

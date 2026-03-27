@@ -5,9 +5,9 @@ import type {
   GamePhase,
   ServerToClientEvents,
   ClientToServerEvents,
-} from "../../../shared/src/types";
-import { TOPICS } from "../../../shared/src/topics";
-import { PHASE_DURATIONS, getWerewolfCount } from "../../../shared/src/constants";
+} from "shared";
+import { TOPICS } from "shared";
+import { PHASE_DURATIONS, getWerewolfCount } from "shared";
 import { RoomManager } from "../state/RoomManager";
 
 type GameIO = Server<ClientToServerEvents, ServerToClientEvents>;

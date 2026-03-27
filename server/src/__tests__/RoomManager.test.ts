@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { RoomManager } from "../state/RoomManager";
-import type { Player } from "../../../shared/src/types";
+import type { Player } from "shared";
 
 function makePlayer(id: string, opts?: Partial<Player>): Player {
   return {
