@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { RoomManager } from "../state/RoomManager";
 import { startGame, resolveVotes, handleVote, transitionTo } from "../game/GameEngine";
 import type { Player } from "shared";
