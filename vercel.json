@@ -1,5 +1,6 @@
 {
-  "installCommand": "cd .. && npm install",
-  "buildCommand": "cd .. && npm run build -w shared && cd client && npm run build",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build -w shared && npm run build -w client",
+  "outputDirectory": "client/.next",
   "framework": "nextjs"
 }

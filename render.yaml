@@ -1,8 +1,13 @@
 services:
   - type: web
-    name: www-server
-    runtime: docker
-    dockerfilePath: ./Dockerfile
+    name: emowolf-server
+    runtime: node
+    buildCommand: npm install && npm run build -w shared && npm run build -w server
+    startCommand: npm run start -w server
+    plan: free
+    healthCheckPath: /health
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: CORS_ORIGIN
-        sync: false
+        value: https://emowolf.vercel.app

@@ -16,6 +16,10 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
 const app = express();
 app.use(cors({ origin: CORS_ORIGIN }));
 
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 const httpServer = createServer(app);
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
