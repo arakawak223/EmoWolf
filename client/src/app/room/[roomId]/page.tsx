@@ -59,14 +59,14 @@ export default function RoomPage({
     });
   }, [isConnected, joined, myPeerId, roomId, playerName, socket, gameState.room]);
 
-  // Show role reveal animation
+  // Show answer reveal animation
   useEffect(() => {
-    if (gameState.phase === "roleReveal" && gameState.myRole) {
+    if (gameState.phase === "roleReveal" && gameState.myAnswer) {
       setShowRoleReveal(true);
       const timer = setTimeout(() => setShowRoleReveal(false), 5000);
       return () => clearTimeout(timer);
     }
-  }, [gameState.phase, gameState.myRole]);
+  }, [gameState.phase, gameState.myAnswer]);
 
   // Show nickname input if player arrived without a name (direct link)
   if (!playerName) {
@@ -129,7 +129,7 @@ export default function RoomPage({
     );
   }
 
-  const { room, phase, myRole, myAnswer, result, error, clearError } = gameState;
+  const { room, phase, myAnswer, result, error, clearError } = gameState;
   const isHost = room?.players.find((p) => p.id === socket.id)?.isHost || false;
 
   return (
@@ -172,11 +172,12 @@ export default function RoomPage({
           <TopicDisplay topic={room.topic} />
         )}
 
-        {showRoleReveal && myRole && myAnswer && (
-          <RoleReveal role={myRole} answer={myAnswer} />
+        {showRoleReveal && myAnswer && (
+          <RoleReveal answer={myAnswer} />
         )}
 
-        {(phase === "emotionDeclare" ||
+        {(phase === "roleReveal" ||
+          phase === "emotionDeclare" ||
           phase === "freeTalk" ||
           phase === "voting" ||
           phase === "result") && (
