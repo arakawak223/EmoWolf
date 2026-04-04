@@ -67,6 +67,19 @@ export function registerRoomHandlers(
     io.to(roomId).emit("room:state", roomManager.sanitizeRoom(updated));
   });
 
+  socket.on("room:updatePeerId", (peerId) => {
+    const roomId = roomManager.getPlayerRoom(socket.id);
+    if (!roomId) return;
+
+    const player = roomManager.getPlayer(roomId, socket.id);
+    if (!player) return;
+
+    player.peerId = peerId;
+
+    const room = roomManager.getRoom(roomId)!;
+    io.to(roomId).emit("room:state", roomManager.sanitizeRoom(room));
+  });
+
   socket.on("room:ready", () => {
     const roomId = roomManager.getPlayerRoom(socket.id);
     if (!roomId) return;

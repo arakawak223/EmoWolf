@@ -22,7 +22,7 @@ export default function RoomPage({
 }) {
   const { roomId } = use(params);
   const searchParams = useSearchParams();
-  const playerName = searchParams.get("name") || "Player";
+  const nameFromUrl = searchParams.get("name");
 
   const { socket, isConnected } = useSocket();
   const { stream, error: mediaError, isLoading: mediaLoading } = useMediaStream();
@@ -35,6 +35,8 @@ export default function RoomPage({
 
   const [joined, setJoined] = useState(false);
   const [showRoleReveal, setShowRoleReveal] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [playerName, setPlayerName] = useState(nameFromUrl || "");
 
   // Join room when connected
   useEffect(() => {
@@ -42,6 +44,8 @@ export default function RoomPage({
 
     // Check if we created this room (we'd already be in it)
     if (gameState.room?.players.some((p) => p.id === socket.id)) {
+      // Host created the room without peerId - send it now
+      socket.emit("room:updatePeerId", myPeerId);
       setJoined(true);
       return;
     }
@@ -63,6 +67,37 @@ export default function RoomPage({
       return () => clearTimeout(timer);
     }
   }, [gameState.phase, gameState.myRole]);
+
+  // Show nickname input if player arrived without a name (direct link)
+  if (!playerName) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-md w-full space-y-6 text-center">
+          <h2 className="text-2xl font-bold">ルームに参加</h2>
+          <p className="text-gray-400 text-sm">ルームコード: {roomId}</p>
+          <input
+            type="text"
+            placeholder="あなたの名前"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+            maxLength={12}
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-wolf-purple text-center text-lg"
+          />
+          <button
+            onClick={() => {
+              if (nickname.trim()) {
+                setPlayerName(nickname.trim());
+              }
+            }}
+            disabled={!nickname.trim()}
+            className="w-full py-4 bg-wolf-purple hover:bg-purple-700 disabled:opacity-50 rounded-lg font-bold text-lg transition-colors"
+          >
+            参加する
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (mediaLoading) {
     return (
@@ -115,7 +150,6 @@ export default function RoomPage({
           phase={phase}
           deadline={gameState.phaseDeadline}
           roomId={roomId}
-          myRole={myRole}
           myAnswer={myAnswer}
         />
       )}

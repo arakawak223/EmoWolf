@@ -2,13 +2,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { GamePhase, Role } from "../../../shared/src/types";
+import type { GamePhase } from "../../../shared/src/types";
 
 interface GamePhaseBarProps {
   phase: GamePhase;
   deadline: number;
   roomId: string;
-  myRole: Role | null;
   myAnswer: string | null;
 }
 
@@ -26,7 +25,6 @@ export function GamePhaseBar({
   phase,
   deadline,
   roomId,
-  myRole,
   myAnswer,
 }: GamePhaseBarProps) {
   const [remaining, setRemaining] = useState(0);
@@ -50,17 +48,6 @@ export function GamePhaseBar({
         <span className="text-wolf-purple font-bold text-sm">
           {PHASE_LABELS[phase]}
         </span>
-        {myRole && (
-          <span
-            className={`text-xs px-2 py-0.5 rounded ${
-              myRole === "werewolf"
-                ? "bg-wolf-red/20 text-wolf-red"
-                : "bg-wolf-blue/20 text-wolf-blue"
-            }`}
-          >
-            {myRole === "werewolf" ? "🐺 人狼" : "👤 市民"}
-          </span>
-        )}
         {myAnswer && (
           <span className="text-xs text-gray-400">
             お題: {myAnswer}

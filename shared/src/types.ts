@@ -66,6 +66,7 @@ export interface ClientToServerEvents {
     callback: (success: boolean, error?: string) => void
   ) => void;
   "room:ready": () => void;
+  "room:updatePeerId": (peerId: string) => void;
   "game:start": () => void;
   "emotion:declare": (emotion: string) => void;
   "emotion:react": (data: { toId: string; reaction: string }) => void;
