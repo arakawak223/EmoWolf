@@ -40,7 +40,7 @@ export default function RoomPage({
 
   // Join room when connected
   useEffect(() => {
-    if (!isConnected || joined || !myPeerId) return;
+    if (!isConnected || joined || !myPeerId || !playerName) return;
 
     // Check if we created this room (we'd already be in it)
     if (gameState.room?.players.some((p) => p.id === socket.id)) {
