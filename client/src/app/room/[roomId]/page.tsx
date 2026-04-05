@@ -73,12 +73,10 @@ export default function RoomPage({
     });
   }, [isConnected, joined, myPeerId, roomId, playerName, socket, gameState.room]);
 
-  // Show answer reveal animation
+  // Show answer reveal when role is revealed
   useEffect(() => {
     if (gameState.phase === "roleReveal" && gameState.myAnswer) {
       setShowRoleReveal(true);
-      const timer = setTimeout(() => setShowRoleReveal(false), 5000);
-      return () => clearTimeout(timer);
     }
   }, [gameState.phase, gameState.myAnswer]);
 
@@ -207,7 +205,10 @@ export default function RoomPage({
         )}
 
         {showRoleReveal && myAnswer && (
-          <RoleReveal answer={myAnswer} />
+          <RoleReveal
+            answer={myAnswer}
+            onConfirm={() => setShowRoleReveal(false)}
+          />
         )}
 
         {(phase === "roleReveal" ||
