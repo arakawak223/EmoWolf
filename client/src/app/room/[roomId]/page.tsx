@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState, useRef, use } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useSocket } from "@/hooks/useSocket";
 import { useGameState } from "@/hooks/useGameState";
 import { useMediaStream } from "@/hooks/useMediaStream";
@@ -22,6 +22,7 @@ export default function RoomPage({
 }) {
   const { roomId } = use(params);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const nameFromUrl = searchParams.get("name");
 
   const { socket, isConnected } = useSocket();
@@ -34,9 +35,21 @@ export default function RoomPage({
   );
 
   const [joined, setJoined] = useState(false);
+  const [joinError, setJoinError] = useState("");
   const [showRoleReveal, setShowRoleReveal] = useState(false);
   const [nickname, setNickname] = useState("");
   const [playerName, setPlayerName] = useState(nameFromUrl || "");
+  const lastSocketId = useRef(socket.id);
+
+  // Reset joined state when socket reconnects with a new ID
+  useEffect(() => {
+    if (socket.id && socket.id !== lastSocketId.current) {
+      lastSocketId.current = socket.id;
+      if (joined) {
+        setJoined(false);
+      }
+    }
+  }, [socket.id, isConnected, joined]);
 
   // Join room when connected
   useEffect(() => {
@@ -53,8 +66,9 @@ export default function RoomPage({
     socket.emit("room:join", roomId, playerName, myPeerId, (success, error) => {
       if (success) {
         setJoined(true);
+        setJoinError("");
       } else {
-        alert(error || "参加できませんでした");
+        setJoinError(error || "参加できませんでした");
       }
     });
   }, [isConnected, joined, myPeerId, roomId, playerName, socket, gameState.room]);
@@ -93,6 +107,26 @@ export default function RoomPage({
             className="w-full py-4 bg-wolf-purple hover:bg-purple-700 disabled:opacity-50 rounded-lg font-bold text-lg transition-colors"
           >
             参加する
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error screen if room join failed
+  if (joinError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-md w-full space-y-6 text-center">
+          <p className="text-wolf-red text-lg font-bold">{joinError}</p>
+          <p className="text-gray-400 text-sm">
+            ルームが終了したか、サーバーが再起動された可能性があります。
+          </p>
+          <button
+            onClick={() => router.push("/")}
+            className="w-full py-4 bg-wolf-purple hover:bg-purple-700 rounded-lg font-bold text-lg transition-colors"
+          >
+            トップに戻る
           </button>
         </div>
       </div>
