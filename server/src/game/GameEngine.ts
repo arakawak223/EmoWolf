@@ -96,8 +96,8 @@ export function transitionTo(
     room.votes = {};
   }
 
-  // Auto-transition based on phase
-  if (duration) {
+  // Auto-transition based on phase (except result — host controls)
+  if (duration && phase !== "result") {
     const nextPhase = getNextPhase(phase);
     if (nextPhase) {
       const timer = setTimeout(() => {
@@ -173,6 +173,8 @@ export function resolveVotes(
     werewolfIds,
     winner,
     eliminatedId,
+    majorityAnswer: room.topic?.majority || "",
+    minorityAnswer: room.topic?.minority || "",
   });
 }
 

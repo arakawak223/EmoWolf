@@ -7,12 +7,24 @@ interface ResultScreenProps {
     werewolfIds: string[];
     winner: "citizens" | "werewolf";
     eliminatedId: string | null;
+    majorityAnswer: string;
+    minorityAnswer: string;
   };
   players: Player[];
   myId: string;
+  isHost: boolean;
+  onNextRound: () => void;
+  onEndGame: () => void;
 }
 
-export function ResultScreen({ result, players, myId }: ResultScreenProps) {
+export function ResultScreen({
+  result,
+  players,
+  myId,
+  isHost,
+  onNextRound,
+  onEndGame,
+}: ResultScreenProps) {
   const eliminated = result.eliminatedId
     ? players.find((p) => p.id === result.eliminatedId)
     : null;
@@ -75,9 +87,43 @@ export function ResultScreen({ result, players, myId }: ResultScreenProps) {
           </div>
         </div>
 
-        <p className="text-gray-600 text-xs mt-4">
-          次のラウンドがまもなく始まります...
-        </p>
+        {/* Topic reveal */}
+        <div className="bg-gray-800 rounded-lg p-4 mt-3">
+          <p className="text-sm text-gray-400 mb-2">お題</p>
+          <div className="flex gap-4 justify-center">
+            <div>
+              <p className="text-xs text-wolf-blue mb-1">市民のお題</p>
+              <p className="font-bold text-lg">{result.majorityAnswer}</p>
+            </div>
+            <div className="border-l border-gray-600" />
+            <div>
+              <p className="text-xs text-wolf-red mb-1">人狼のお題</p>
+              <p className="font-bold text-lg">{result.minorityAnswer}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Host controls */}
+        {isHost ? (
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={onNextRound}
+              className="flex-1 py-3 bg-wolf-purple hover:bg-purple-700 rounded-lg font-bold transition-colors"
+            >
+              次のお題へ
+            </button>
+            <button
+              onClick={onEndGame}
+              className="flex-1 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors"
+            >
+              ゲームを終了する
+            </button>
+          </div>
+        ) : (
+          <p className="text-gray-600 text-xs mt-4">
+            ホストが次の操作を選択中...
+          </p>
+        )}
       </div>
     </div>
   );

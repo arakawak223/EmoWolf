@@ -24,8 +24,10 @@ export class RoomManager {
     if (room.players.length >= 8) return null;
     if (room.phase !== "lobby") return null;
 
-    // Prevent duplicate joins
-    if (room.players.some((p) => p.id === player.id)) {
+    // Prevent duplicate joins, but update peerId for reconnections
+    const existing = room.players.find((p) => p.id === player.id);
+    if (existing) {
+      if (player.peerId) existing.peerId = player.peerId;
       return room;
     }
 

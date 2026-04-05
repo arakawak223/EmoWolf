@@ -46,6 +46,8 @@ export interface ServerToClientEvents {
     werewolfIds: string[];
     winner: "citizens" | "werewolf";
     eliminatedId: string | null;
+    majorityAnswer: string;
+    minorityAnswer: string;
   }) => void;
   "emotion:reaction": (data: {
     fromId: string;
@@ -68,6 +70,9 @@ export interface ClientToServerEvents {
   "room:ready": () => void;
   "room:updatePeerId": (peerId: string) => void;
   "game:start": () => void;
+  "game:skipToVoting": () => void;
+  "game:nextRound": () => void;
+  "game:end": () => void;
   "emotion:declare": (emotion: string) => void;
   "emotion:react": (data: { toId: string; reaction: string }) => void;
   "game:vote": (targetId: string) => void;

@@ -9,6 +9,8 @@ interface GamePhaseBarProps {
   deadline: number;
   roomId: string;
   myAnswer: string | null;
+  isHost: boolean;
+  onSkipToVoting?: () => void;
 }
 
 const PHASE_LABELS: Record<GamePhase, string> = {
@@ -26,6 +28,8 @@ export function GamePhaseBar({
   deadline,
   roomId,
   myAnswer,
+  isHost,
+  onSkipToVoting,
 }: GamePhaseBarProps) {
   const [remaining, setRemaining] = useState(0);
 
@@ -55,6 +59,16 @@ export function GamePhaseBar({
         )}
       </div>
       <div className="flex items-center gap-3">
+        {isHost &&
+          (phase === "emotionDeclare" || phase === "freeTalk") &&
+          onSkipToVoting && (
+            <button
+              onClick={onSkipToVoting}
+              className="text-xs bg-wolf-red hover:bg-red-700 px-3 py-1 rounded transition-colors font-bold"
+            >
+              すぐ投票する
+            </button>
+          )}
         <span className="font-mono text-sm text-gray-400">
           Room: {roomId}
         </span>

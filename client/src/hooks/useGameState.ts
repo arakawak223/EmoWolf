@@ -20,6 +20,8 @@ interface GameState {
     werewolfIds: string[];
     winner: "citizens" | "werewolf";
     eliminatedId: string | null;
+    majorityAnswer: string;
+    minorityAnswer: string;
   } | null;
   error: string | null;
 }
@@ -33,6 +35,8 @@ type GameAction =
       werewolfIds: string[];
       winner: "citizens" | "werewolf";
       eliminatedId: string | null;
+      majorityAnswer: string;
+      minorityAnswer: string;
     }
   | { type: "ERROR"; message: string }
   | { type: "CLEAR_ERROR" };
@@ -69,6 +73,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
           werewolfIds: action.werewolfIds,
           winner: action.winner,
           eliminatedId: action.eliminatedId,
+          majorityAnswer: action.majorityAnswer,
+          minorityAnswer: action.minorityAnswer,
         },
       };
     case "ERROR":
@@ -98,9 +104,19 @@ export function useGameState(
       dispatch({ type: "PHASE_CHANGE", phase, deadline });
     });
 
-    socket.on("game:result", ({ werewolfIds, winner, eliminatedId }) => {
-      dispatch({ type: "RESULT", werewolfIds, winner, eliminatedId });
-    });
+    socket.on(
+      "game:result",
+      ({ werewolfIds, winner, eliminatedId, majorityAnswer, minorityAnswer }) => {
+        dispatch({
+          type: "RESULT",
+          werewolfIds,
+          winner,
+          eliminatedId,
+          majorityAnswer,
+          minorityAnswer,
+        });
+      }
+    );
 
     socket.on("room:error", (msg) => {
       dispatch({ type: "ERROR", message: msg });

@@ -5,7 +5,7 @@ import type {
 } from "shared";
 import { MIN_PLAYERS } from "shared";
 import { RoomManager } from "../state/RoomManager";
-import { startGame, handleVote } from "../game/GameEngine";
+import { startGame, handleVote, transitionTo } from "../game/GameEngine";
 
 type GameIO = Server<ClientToServerEvents, ServerToClientEvents>;
 type GameSocket = Socket<ClientToServerEvents, ServerToClientEvents>;
@@ -50,5 +50,46 @@ export function registerGameHandlers(
     if (!roomId) return;
 
     handleVote(io, roomManager, roomId, socket.id, targetId);
+  });
+
+  socket.on("game:skipToVoting", () => {
+    const roomId = roomManager.getPlayerRoom(socket.id);
+    if (!roomId) return;
+
+    const player = roomManager.getPlayer(roomId, socket.id);
+    if (!player?.isHost) return;
+
+    const room = roomManager.getRoom(roomId);
+    if (!room) return;
+
+    if (room.phase === "emotionDeclare" || room.phase === "freeTalk") {
+      transitionTo(io, roomManager, roomId, "voting");
+    }
+  });
+
+  socket.on("game:nextRound", () => {
+    const roomId = roomManager.getPlayerRoom(socket.id);
+    if (!roomId) return;
+
+    const player = roomManager.getPlayer(roomId, socket.id);
+    if (!player?.isHost) return;
+
+    const room = roomManager.getRoom(roomId);
+    if (!room || room.phase !== "result") return;
+
+    startGame(io, roomManager, roomId);
+  });
+
+  socket.on("game:end", () => {
+    const roomId = roomManager.getPlayerRoom(socket.id);
+    if (!roomId) return;
+
+    const player = roomManager.getPlayer(roomId, socket.id);
+    if (!player?.isHost) return;
+
+    const room = roomManager.getRoom(roomId);
+    if (!room || room.phase !== "result") return;
+
+    transitionTo(io, roomManager, roomId, "lobby");
   });
 }

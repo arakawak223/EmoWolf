@@ -183,6 +183,8 @@ export default function RoomPage({
           deadline={gameState.phaseDeadline}
           roomId={roomId}
           myAnswer={myAnswer}
+          isHost={isHost}
+          onSkipToVoting={() => socket.emit("game:skipToVoting")}
         />
       )}
 
@@ -246,6 +248,9 @@ export default function RoomPage({
                 result={result}
                 players={room?.players || []}
                 myId={socket.id || ""}
+                isHost={isHost}
+                onNextRound={() => socket.emit("game:nextRound")}
+                onEndGame={() => socket.emit("game:end")}
               />
             )}
           </div>
